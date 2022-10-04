@@ -2,8 +2,6 @@ from flask import Flask, jsonify
 
 app = Flask(__name__)
 
-usersList = ['Bob', 'Jim', 'John', 'Jimmy', 'James', ]
-
 # Create, read, update, delete
 '''
 TDL:
@@ -18,12 +16,15 @@ Basic
         Update acc bal
         All employees
         Register - checks for employee already
+        HTTP Codes/error messages
     Welcome/goodbye messages
     Password encryption
     Error messages
 Testing
 Docker
 '''
+
+usersList = ['Bob', 'Jim', 'John', 'Jimmy', 'James', ]
 
 # ------
 
@@ -32,10 +33,29 @@ def helloWorld():
     return 'Hello world!'
 
 # ------
-# add post method
-@app.route('/users', methods=['GET'])
-def users():
-    return jsonify({'users': [user for user in usersList]})
+@app.route('/employees', methods=['GET'])
+def get_employees():
+    return jsonify({'employees': [user for user in usersList]})
 
+@app.route('employees/<int:employeeID>', methods=['GET'])
+def get_specific_employee():
+    pass
 
+# ------
+@app.route('/employees', methods=['POST'])
+def create_employee(name, id, email, mobileNumber, pin):
+    pass
+    # check if exists in db, if not create args + accBal
+
+# ------
+@app.route('/employees/<int:employeeID>', methods=['PUT'])
+def update_balance():
+    pass
+    # check if exists in db, if then update
+
+# ------
+@app.route('/employees/<int:employeeID>', methods=['DELETE'])
+def delete_employee():
+    pass
+    # check if exists in db, if then delete
 
