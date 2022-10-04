@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
@@ -37,9 +37,21 @@ def helloWorld():
 def get_employees():
     return jsonify({'employees': [user for user in usersList]})
 
-@app.route('employees/<int:employeeID>', methods=['GET'])
-def get_specific_employee():
-    pass
+@app.route('/employees/<int:employeeID>', methods=['GET'])
+def get_specific_employee(employeeID):
+    employee = {'employee': usersList[employeeID]}
+    context = request.args.get('context')
+
+    if context == 'welcome':
+        employee['contextMessage'] = f'Welcome {usersList[employeeID]}'
+        return jsonify(employee)
+
+    elif context == 'goodbye':
+        employee['contextMessage'] = f'Goodbye {usersList[employeeID]}, have a good day.'
+        return jsonify(employee)
+
+    else:
+        return jsonify(employee)
 
 # ------
 @app.route('/employees', methods=['POST'])
@@ -52,6 +64,7 @@ def create_employee(name, id, email, mobileNumber, pin):
 def update_balance():
     pass
     # check if exists in db, if then update
+    # queryParam acc bal
 
 # ------
 @app.route('/employees/<int:employeeID>', methods=['DELETE'])
